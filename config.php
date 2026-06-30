@@ -289,14 +289,14 @@ function lang_switcher(): string {
     }
     $html .= '</div>';
 
-    // Mobile: dropdown
-    $html .= '<div class="md:hidden flex items-center">';
-    $html .= '<select onchange="var u=new URL(window.location.href);u.searchParams.set(\'lang\',this.value);window.location.href=u.toString()" class="bg-gray-800 border border-gray-700 rounded text-xs text-gray-100 px-2 py-1 outline-none cursor-pointer">';
+    // Mobile: flag buttons
+    $html .= '<div class="md:hidden flex gap-0.5 sm:gap-1 text-xs sm:text-sm">';
     foreach ($codes as $code => [$flag, $label]) {
-        $sel = $code === $current ? ' selected' : '';
-        $html .= '<option value="' . $code . '"' . $sel . '>' . $flag . ' ' . __($label) . '</option>';
+        $params = array_merge($_GET, ['lang' => $code]);
+        $url = '?' . http_build_query($params);
+        $active = $code === $current ? ' bg-indigo-600 text-white' : ' text-gray-400 hover:text-gray-200 hover:bg-gray-700';
+        $html .= '<a href="' . h($url) . '" class="px-1.5 sm:px-2 py-1 rounded transition font-medium' . $active . '" title="' . __($label) . '">' . $flag . '</a>';
     }
-    $html .= '</select>';
     $html .= '</div>';
 
     return $html;
